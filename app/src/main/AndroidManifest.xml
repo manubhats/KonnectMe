@@ -29,7 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<receiver android:name="hackdfw.connectme.BroadcastReceiver"></receiver>-->
     </application>
 
 </manifest>

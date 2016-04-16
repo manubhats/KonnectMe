@@ -1,10 +1,6 @@
 package hackdfw.connectme;
 
 import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -28,7 +23,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button sendSMS;
     private EditText userPhoneNumber;
     private BroadcastReceiver receiver;
-    private SMSBroadcastReceiver smsBroadcastReceiver;
     private Thread thread;
 
     @Override
@@ -92,21 +86,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public class SMSBroadcastReceiver extends BroadcastReceiver {
-
-        private final String TAG = SMSBroadcastReceiver.class.getSimpleName();
-        public static final String SMS_CONTENT = "sms_content";
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.i(TAG, "Intent recieved: " + intent.getAction());
-
-            Cursor c = context.getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
-            c.moveToFirst();
-            String smsBody = c.getString(12);
-            Toast.makeText(context, "SMS RECEIVED:", Toast.LENGTH_LONG).show();
-            Toast.makeText(context, smsBody, Toast.LENGTH_LONG).show();
-        }
-    }
 
 }
