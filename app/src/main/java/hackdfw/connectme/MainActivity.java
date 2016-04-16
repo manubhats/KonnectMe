@@ -1,15 +1,35 @@
 package hackdfw.connectme;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
+    private TextView verifed;
+    private Button sendSMS;
+    private EditText userPhoneNumber;
+    private BroadcastReceiver receiver;
+    private SMSBroadcastReceiver smsBroadcastReceiver;
+    private Thread thread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +37,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        sendSMS = (Button) findViewById(R.id.btn_sendSMS);
+        userPhoneNumber = (EditText) findViewById(R.id.et_userPhone);
+        verifed = (TextView) findViewById(R.id.tv_verified);
+
+        sendSMS.setOnClickListener(this);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -49,4 +76,37 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    @Override
+    public void onClick(View v) {
+
+        switch(v.getId()) {
+
+            case R.id.btn_sendSMS:
+                String number = userPhoneNumber.getText().toString();
+
+                SmsManager sms = SmsManager.getDefault();
+                sms.sendTextMessage(number, null, "Works", null, null);
+                Log.d(LOG_TAG, "Button Pressed");
+        }
+    }
+
+    public class SMSBroadcastReceiver extends BroadcastReceiver {
+
+        private final String TAG = SMSBroadcastReceiver.class.getSimpleName();
+        public static final String SMS_CONTENT = "sms_content";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i(TAG, "Intent recieved: " + intent.getAction());
+
+            Cursor c = context.getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
+            c.moveToFirst();
+            String smsBody = c.getString(12);
+            Toast.makeText(context, "SMS RECEIVED:", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, smsBody, Toast.LENGTH_LONG).show();
+        }
+    }
+
 }
