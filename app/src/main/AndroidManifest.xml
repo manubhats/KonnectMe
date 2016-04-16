@@ -4,13 +4,14 @@
 
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS"/>
+    <!--<uses-permission android:name="android.permission.RECEIVE_SMS"/>-->
+    <!--<uses-permission android:name="android.permission.READ_SMS"/>-->
 
-    <receiver android:name="">
-        <intent-filter>
-            <action android:name="android.provider.telephony.SMS_RECEIVED"/>
-        </intent-filter>
-    </receiver>
+    <!--<receiver android:name=".SMSBroadcastReceiver">-->
+        <!--<intent-filter>-->
+            <!--<action android:name="android.provider.telephony.SMS_RECEIVED"/>-->
+        <!--</intent-filter>-->
+    <!--</receiver>-->
 
     <application
         android:allowBackup="true"
