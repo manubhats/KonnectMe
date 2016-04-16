@@ -25,12 +25,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private BroadcastReceiver receiver;
     private Thread thread;
 
+    private SMSReceiver smsReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        smsReceiver = new SMSReceiver();
 
         sendSMS = (Button) findViewById(R.id.btn_sendSMS);
         userPhoneNumber = (EditText) findViewById(R.id.et_userPhone);
@@ -38,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         sendSMS.setOnClickListener(this);
 
+        if(smsReceiver.verification) {
+
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
