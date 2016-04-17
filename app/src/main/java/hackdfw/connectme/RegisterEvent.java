@@ -10,12 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.Random;
 
 
-public class RegisterEvent extends AppCompatActivity {
+public class RegisterEvent extends AppCompatActivity implements View.OnClickListener{
 
    // public final int PICK_CONTACT = 2015;
     private static final String TAG = RegisterEvent.class.getSimpleName();
@@ -31,6 +32,8 @@ public class RegisterEvent extends AppCompatActivity {
 
     private SQLDatabase sqlDatabase;
 
+    private Button add, invite;
+
 
     public final int PICK_CONTACT = 2015;
 
@@ -43,8 +46,18 @@ public class RegisterEvent extends AppCompatActivity {
 
         sqlDatabase = new SQLDatabase(this);
 
+        sqlDatabase.open();
+        sqlDatabase.deleteAll();
+        sqlDatabase.close();
+
         Random rand = new Random();
         eventID = rand.nextInt(10000);
+
+        add = (Button) findViewById(R.id.addSelected);
+        invite = (Button) findViewById(R.id.invitePeople);
+
+        add.setOnClickListener(this);
+        invite.setOnClickListener(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fetchContact);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -140,23 +153,25 @@ public class RegisterEvent extends AppCompatActivity {
 
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == PICK_CONTACT && resultCode == RESULT_OK) {
-//            EditText contNumb = (EditText)findViewById(R.id.contNumb);
-//            EditText contName = (EditText)findViewById(R.id.contName);
-//            String contactName = null;
-//            Uri contactUri = data.getData();
-//            Cursor cursor = getContentResolver().query(contactUri, null, null, null, null);
-//            while(cursor.moveToNext()){
-//                contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME));
-//            }
-//            cursor.moveToFirst();
-//            int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-//            Log.d("phone number", cursor.getString(column));
-//            contName.setText(contactName);
-//            contNumb.setText(cursor.getString(column));
-//        }
-//    }
 
+    @Override
+    public void onClick(View v) {
+
+        switch(v.getId()) {
+            case R.id.addSelected:
+                if(contactName != null && contactNumber != null) {
+
+                    sqlDatabase.open();
+                    sqlDatabase.createEntry(contactName, contactNumber, null, String.valueOf(eventID));
+                    sqlDatabase.close();
+                }
+                break;
+            case R.id.invitePeople:
+
+//                sqlDatabase.open();
+//                Log.d("RegisterEvent", sqlDatabase.getData(String.valueOf(eventID)));
+//                sqlDatabase.close();
+                break;
+        }
+    }
 }

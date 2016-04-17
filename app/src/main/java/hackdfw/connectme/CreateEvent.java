@@ -14,7 +14,6 @@ import android.widget.Button;
 
 public class CreateEvent extends AppCompatActivity {
 
-    private static final String USERNAME = "User Name";
     private static final String USERNUMBER = "User Number";
     private static final String LOG_TAG = CreateEvent.class.getSimpleName();
 
@@ -25,77 +24,58 @@ public class CreateEvent extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        String userNumber = getIntent().getStringExtra("user number");
-        String userName = getIntent().getStringExtra("user name");
+        SharedPreferences sharedPreferences = getSharedPreferences(USERNUMBER, Context.MODE_PRIVATE);
+        ;
 
-        Log.d(LOG_TAG, userNumber);
-
-        Log.d(LOG_TAG, "WORRK DAMMIT");
-        SharedPreferences sharedpreferences = getSharedPreferences(USERNUMBER, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
         try {
+            String userNumber = getIntent().getStringExtra("user number");
+            String userName = getIntent().getStringExtra("user name");
 
-            editor.putString(
-                    "user number",
-                    userNumber
-            );
+            if (!userName.equals("") && !userNumber.equals("")) {
 
-            editor.putString(
-                    "user name",
-                    userName
-            );
-        } catch(Exception e) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                editor.putString(
+                        "user number",
+                        userNumber
+                );
+
+                editor.putString(
+                        "user name",
+                        userName
+                );
+                editor.commit();
+            }
+        }catch (Exception e) {
             e.printStackTrace();
         }
-        editor.commit();
 
-        Log.d(LOG_TAG, "USER NUMBER: " + sharedpreferences.getString("user number", ""));
-        Log.d(LOG_TAG, "USER NAME: " + sharedpreferences.getString("user name", ""));
+//        Log.d(LOG_TAG, userNumber);
 
-//        SharedPreferences sp = getSharedPreferences(USERNAME, Context.MODE_PRIVATE);
-//        SharedPreferences.Editor edit = sharedpreferences.edit();
-//        try {
-////            String userNumber = getIntent().getStringExtra("user number");
-//            String userName = getIntent().getStringExtra("user name");
-//            editor.putString(
-//                    USERNAME,
-//                    userName
-//            );
-//        } catch(Exception e) {
-//            e.printStackTrace();
-//        }
-//        editor.commit();
+            Log.d(LOG_TAG, "WORRK DAMMIT");
+
+            Log.d(LOG_TAG, "USER NUMBER: " + sharedPreferences.getString("user number", ""));
+            Log.d(LOG_TAG, "USER NAME: " + sharedPreferences.getString("user name", ""));
 
 
-//        SharedPreferences sp1 = this.getSharedPreferences(USERNAME, Context.MODE_PRIVATE);
-//        String getName, getNumber;
-//
-//        getNumber = sp.getString("user number", "").toString();
-////        getName = sp.getString("user name", null).toString();
-//
-//        Log.d(LOG_TAG, "Number: " + getNumber
-////        + "\nName: " + getName
-//        );
-//
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+            Button createEvent = (Button) findViewById(R.id.createEvent);
+            createEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-        Button createEvent = (Button)findViewById(R.id.createEvent);
-        createEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                    Intent i = new Intent(CreateEvent.this, RegisterEvent.class);
+                    startActivity(i);
+                }
+            });
+        }
 
-                Intent i = new Intent(CreateEvent.this, RegisterEvent.class);
-                startActivity(i);
-            }
-        });
     }
-
-}

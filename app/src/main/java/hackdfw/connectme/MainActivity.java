@@ -3,6 +3,7 @@ package hackdfw.connectme;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,9 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-
-
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity implements Runnable{
@@ -41,6 +40,20 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        SharedPreferences sp = getSharedPreferences("User Number", Context.MODE_PRIVATE);
+
+        try {
+            String number = sp.getString("user number", "");
+
+            if(number != "") {
+                Intent intent = new Intent(MainActivity.this, CreateEvent.class);
+                startActivity(intent);
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 
         sendSMS = (Button) findViewById(R.id.btn_sendSMS);
         userPhoneNumber = (EditText) findViewById(R.id.et_userPhone);
@@ -123,8 +136,9 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                     authStarted = false;
                     break;
                 }
-                else if(counter == 5) {
+                else if(counter == 10) {
                     verifed.setText("Not Verified");
+                    Toast.makeText(this, "SORRY, VERIFICATION FAILED", Toast.LENGTH_LONG);
                     authStarted = false;
                     break;
                 }
