@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         }
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
