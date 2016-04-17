@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -27,6 +26,12 @@ public class RegisterEvent extends AppCompatActivity {
     public static final int REQUEST_CODE_PICK_CONTACT = 1;
     public static final int MAX_PICK_CONTACT = 10;
 
+    private String contactNumber = null;
+    private String contactName = null;
+
+    private SQLDatabase sqlDatabase;
+
+
     public final int PICK_CONTACT = 2015;
 
     @Override
@@ -35,6 +40,8 @@ public class RegisterEvent extends AppCompatActivity {
         setContentView(R.layout.activity_register_event);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        sqlDatabase = new SQLDatabase(this);
 
         Random rand = new Random();
         eventID = rand.nextInt(10000);
@@ -61,6 +68,13 @@ public class RegisterEvent extends AppCompatActivity {
 
             retrieveContactName();
             retrieveContactNumber();
+
+            if(contactName != null && contactNumber != null) {
+
+                sqlDatabase.open();
+                sqlDatabase.createEntry(contactName, contactNumber, null, String.valueOf(eventID));
+                sqlDatabase.close();
+            }
         }
     }
 
@@ -68,7 +82,6 @@ public class RegisterEvent extends AppCompatActivity {
 
     private void retrieveContactNumber() {
 
-        String contactNumber = null;
         EditText contNumb = (EditText)findViewById(R.id.contNumb);
 
         // getting contacts ID
@@ -107,7 +120,6 @@ public class RegisterEvent extends AppCompatActivity {
 
     private void retrieveContactName() {
 
-        String contactName = null;
         EditText contName = (EditText)findViewById(R.id.contName);
         // querying contact data store
         Cursor cursor = getContentResolver().query(uriContact, null, null, null, null);
@@ -123,6 +135,8 @@ public class RegisterEvent extends AppCompatActivity {
         cursor.close();
         contName.setText(contactName);
         Log.d(TAG, "Contact Name: " + contactName);
+
+
 
     }
 

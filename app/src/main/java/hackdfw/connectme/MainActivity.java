@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity implements Runnable{
     private boolean authStarted = false;
     private static boolean verification = false;
     private Thread thread = null;
+    private EditText userName;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         sendSMS = (Button) findViewById(R.id.btn_sendSMS);
         userPhoneNumber = (EditText) findViewById(R.id.et_userPhone);
         verifed = (TextView) findViewById(R.id.tv_verified);
+        userName = (EditText) findViewById(R.id.et_userName);
         thread = new Thread(MainActivity.this);
 
         sendSMS.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +117,8 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                 if(verification) {
                     Thread.sleep(1500);
                     Intent intent = new Intent(MainActivity.this, CreateEvent.class);
+                    intent.putExtra("user number", userPhoneNumber.getText().toString());
+                    intent.putExtra("user name", userName.getText().toString());
                     startActivity(intent);
                     authStarted = false;
                     break;

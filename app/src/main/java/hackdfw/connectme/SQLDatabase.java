@@ -2,6 +2,7 @@ package hackdfw.connectme;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -49,6 +50,33 @@ public class SQLDatabase {
     public void close() {
 
         dbHelper.close();
+    }
+
+    public String getData(String eventID) {
+
+        String[] columns = new String[]{KEY_ROWID, KEY_NAME, KEY_NUMBER, KEY_EMAIL, KEY_EVENTID };
+
+        String query = "SELECT COUNT(*) FROM " + DATABASE_TABLE + " WHERE eventID = " + eventID;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        String result = "";
+
+        int iRow = c.getColumnIndex(KEY_ROWID);
+        int iName = c.getColumnIndex(KEY_NAME);
+        int iNumber = c.getColumnIndex(KEY_NUMBER);
+        int iEmail = c.getColumnIndex(KEY_EMAIL);
+        int iEventID = c.getColumnIndex(KEY_EVENTID);
+
+        for(c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+
+            result = result + c.getString(iRow)
+                    + " " + c.getString(iName)
+                    + " " + c.getString(iNumber)
+                    + " " + c.getString(iEmail)
+                    + " " + c.getString(iEventID)
+                    + "\n";
+        }
+
+        return result;
     }
 
     private static class DBHelper extends SQLiteOpenHelper {
