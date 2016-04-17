@@ -1,6 +1,8 @@
 package hackdfw.connectme;
 
 import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,17 +17,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements Runnable{
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private TextView verifed;
     private Button sendSMS;
     private EditText userPhoneNumber;
-    private BroadcastReceiver receiver;
-    private Thread thread;
-
-    private SMSReceiver smsReceiver;
+    private boolean authStarted = false;
+    private static boolean verification = false;
+    private Thread thread = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -34,17 +35,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        smsReceiver = new SMSReceiver();
-
         sendSMS = (Button) findViewById(R.id.btn_sendSMS);
         userPhoneNumber = (EditText) findViewById(R.id.et_userPhone);
         verifed = (TextView) findViewById(R.id.tv_verified);
+        thread = new Thread(MainActivity.this);
 
-        sendSMS.setOnClickListener(this);
+        sendSMS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        if(smsReceiver.verification) {
+                String number = userPhoneNumber.getText().toString();
+                SmsManager sms = SmsManager.getDefault();
+                sms.sendTextMessage(number, null, "Works", null, null);
+                authStarted = true;
+                if(!thread.isAlive()) thread.start();
+                Log.d(LOG_TAG, "Button Pressed");
+            }
+        });
 
-        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -78,20 +86,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
-    public void onClick(View v) {
+    public void run() {
 
-        switch(v.getId()) {
+        Log.d(LOG_TAG, "Started!");
+        int counter = 1;
+        while(authStarted) {
 
-            case R.id.btn_sendSMS:
-                String number = userPhoneNumber.getText().toString();
-
-                SmsManager sms = SmsManager.getDefault();
-                sms.sendTextMessage(number, null, "Works", null, null);
-                Log.d(LOG_TAG, "Button Pressed");
+            counter += 1;
+            try {
+                Thread.sleep(1000);
+                if(verification) {
+                    Thread.sleep(1500);
+                    Intent intent = new Intent(MainActivity.this, CreateEvent.class);
+                    startActivity(intent);
+                    authStarted = false;
+                    break;
+                }
+                else if(counter == 5) {
+                    verifed.setText("Not Verified");
+                    authStarted = false;
+                    break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+        authStarted = false;
+    }
 
+    public static class SmsReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Log.d(LOG_TAG, "Message received.");
+            verification = true;
+        }
+    }
 }
