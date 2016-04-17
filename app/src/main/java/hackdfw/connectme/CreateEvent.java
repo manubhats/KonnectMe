@@ -31,6 +31,7 @@ public class CreateEvent extends AppCompatActivity {
         createEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent i = new Intent(CreateEvent.this, RegisterEvent.class);
                 startActivity(i);
             }

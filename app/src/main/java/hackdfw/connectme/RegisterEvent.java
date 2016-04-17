@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class RegisterEvent extends AppCompatActivity {
@@ -23,6 +24,7 @@ public class RegisterEvent extends AppCompatActivity {
     public static final int MAX_PICK_CONTACT = 10;
 
     public final int PICK_CONTACT = 2015;
+    private int eventID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,9 @@ public class RegisterEvent extends AppCompatActivity {
         setContentView(R.layout.activity_register_event);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Random rand = new Random();
+        eventID = rand.nextInt(10000);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fetchContact);
         fab.setOnClickListener(new View.OnClickListener() {
