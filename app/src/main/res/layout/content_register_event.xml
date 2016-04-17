@@ -46,8 +46,50 @@
         android:layout_height="wrap_content"
         android:text="Invite People"
         android:id="@+id/invitePeople"
+        android:layout_below="@+id/phoneNumb"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="116dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:ems="10"
+        android:id="@+id/editText3"
         android:layout_below="@+id/descEvent"
-        android:layout_alignStart="@+id/descEvent"
-        android:layout_marginTop="34dp" />
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/emailId"
+        android:layout_below="@+id/editText3"
+        android:layout_alignParentStart="true"
+        android:text="Email" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:id="@+id/phoneNumb"
+        android:layout_below="@+id/emailId"
+        android:layout_alignParentStart="true"
+        android:text="Phone" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:src="@android:drawable/ic_menu_add"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_below="@+id/editText3"
+        android:layout_toEndOf="@+id/descEvent"
+        app:backgroundTint="@color/colorPrimary"/>
 
 </RelativeLayout>
