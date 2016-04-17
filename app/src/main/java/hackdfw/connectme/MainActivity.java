@@ -66,6 +66,16 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                         .setAction("Action", null).show();
             }
         });
+
+        Button next = (Button)findViewById(R.id.gotoNext);
+        next.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent n = new Intent(MainActivity.this,CreateEvent.class);
+                startActivity(n);
+            }
+        });
     }
 
     @Override
