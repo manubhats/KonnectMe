@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                 }
                 else if(counter == 10) {
                     verifed.setText("Not Verified");
-                    Toast.makeText(this, "SORRY, VERIFICATION FAILED", Toast.LENGTH_LONG);
+                    Toast.makeText(this, "SORRY, VERIFICATION FAILED", Toast.LENGTH_LONG).show();
                     authStarted = false;
                     break;
                 }

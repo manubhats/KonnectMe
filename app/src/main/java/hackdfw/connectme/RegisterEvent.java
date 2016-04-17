@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -31,8 +32,10 @@ public class RegisterEvent extends AppCompatActivity implements View.OnClickList
     private String contactName = null;
 
     private SQLDatabase sqlDatabase;
+    private SQLEventDatabase sqlEventDatabase;
 
     private Button add, invite;
+    private EditText etName, etEmail, etNumber;
 
 
     public final int PICK_CONTACT = 2015;
@@ -44,7 +47,12 @@ public class RegisterEvent extends AppCompatActivity implements View.OnClickList
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        etName = (EditText) findViewById(R.id.contName);
+        etNumber = (EditText) findViewById(R.id.contNumb);
+        etEmail = (EditText) findViewById(R.id.emailId);
+
         sqlDatabase = new SQLDatabase(this);
+        sqlEventDatabase = new SQLEventDatabase(this);
 
         sqlDatabase.open();
         sqlDatabase.deleteAll();
@@ -149,8 +157,6 @@ public class RegisterEvent extends AppCompatActivity implements View.OnClickList
         contName.setText(contactName);
         Log.d(TAG, "Contact Name: " + contactName);
 
-
-
     }
 
 
@@ -164,6 +170,20 @@ public class RegisterEvent extends AppCompatActivity implements View.OnClickList
                     sqlDatabase.open();
                     sqlDatabase.createEntry(contactName, contactNumber, null, String.valueOf(eventID));
                     sqlDatabase.close();
+
+                    if(!etName.getText().toString().equals("")) {
+                        etName.setText("");
+                    }
+
+                    if(!etEmail.getText().toString().equals("")) {
+                        etEmail.setText("");
+                    }
+
+                    if(!etNumber.getText().toString().equals("")) {
+                        etNumber.setText("");
+                    }
+                    Toast.makeText(this, "Added!", Toast.LENGTH_LONG).show();
+
                 }
                 break;
             case R.id.invitePeople:
@@ -171,6 +191,8 @@ public class RegisterEvent extends AppCompatActivity implements View.OnClickList
 //                sqlDatabase.open();
 //                Log.d("RegisterEvent", sqlDatabase.getData(String.valueOf(eventID)));
 //                sqlDatabase.close();
+                sqlEventDatabase.open();
+//                sqlEventDatabase.createEntry(eventName, eventID);
                 break;
         }
     }

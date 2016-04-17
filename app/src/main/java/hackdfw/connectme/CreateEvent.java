@@ -11,11 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
 public class CreateEvent extends AppCompatActivity {
 
     private static final String USERNUMBER = "User Number";
     private static final String LOG_TAG = CreateEvent.class.getSimpleName();
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +26,9 @@ public class CreateEvent extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        listView = (ListView) findViewById(R.id.lvList);
+
         SharedPreferences sharedPreferences = getSharedPreferences(USERNUMBER, Context.MODE_PRIVATE);
-        ;
 
         try {
             String userNumber = getIntent().getStringExtra("user number");
@@ -50,7 +53,7 @@ public class CreateEvent extends AppCompatActivity {
             e.printStackTrace();
         }
 
-//        Log.d(LOG_TAG, userNumber);
+
 
             Log.d(LOG_TAG, "WORRK DAMMIT");
 
