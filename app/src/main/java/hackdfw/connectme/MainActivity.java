@@ -1,8 +1,6 @@
 package hackdfw.connectme;
 
 import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,23 +13,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements Runnable{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private static final String LOG_TAG = "Authentication";
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private TextView verifed;
     private Button sendSMS;
     private EditText userPhoneNumber;
     private BroadcastReceiver receiver;
     private Thread thread;
-    private BroadcastReceiver broadcastReceiver;
-    private static Switch switchVerfication;
+
     private SMSReceiver smsReceiver;
-    private static boolean verification = false;
-    private boolean authStarted = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -42,26 +36,15 @@ public class MainActivity extends AppCompatActivity implements Runnable{
 
         smsReceiver = new SMSReceiver();
 
-
         sendSMS = (Button) findViewById(R.id.btn_sendSMS);
         userPhoneNumber = (EditText) findViewById(R.id.et_userPhone);
         verifed = (TextView) findViewById(R.id.tv_verified);
-        switchVerfication = (Switch) findViewById(R.id.verfication);
-        sendSMS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                String number = userPhoneNumber.getText().toString();
-                String msg = "Works";
-                SmsManager sm = SmsManager.getDefault();
-                sm.sendTextMessage(number, null, msg, null, null);
-                authStarted = true;
-                Log.d(LOG_TAG, "AuthStarted received." + authStarted);
+        sendSMS.setOnClickListener(this);
 
-                thread = new Thread(MainActivity.this);
-                thread.start();
-            }
-        });
+        if(smsReceiver.verification) {
+
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -95,51 +78,18 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void run() {
-        int counter = 0;
-        Log.d(LOG_TAG, "Running.");
-        while (authStarted) {
-            Log.d(LOG_TAG, "Running.");
-            Log.d(LOG_TAG, "Started");
-            try {
-                Thread.sleep(1000);
-                counter++;
-                if (verification == true) {
-                    Intent intent = new Intent(MainActivity.this, CreateEvent.class);
-                    startActivity(intent);
-                    authStarted = false;
-                    break;
-                } else if (counter == 10) {
-                    verifed.setText("Verfication Failed.");
-                    break;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        finish();
-        thread.interrupt();
+    public void onClick(View v) {
 
-    }
+        switch(v.getId()) {
 
-    public static class SMSReceiver extends BroadcastReceiver {
+            case R.id.btn_sendSMS:
+                String number = userPhoneNumber.getText().toString();
 
-        public SMSReceiver() {
-
-            //0 Argument Constructor.
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            verification = true;
-            Log.d(LOG_TAG, "SMS received." + verification);
+                SmsManager sms = SmsManager.getDefault();
+                sms.sendTextMessage(number, null, "Works", null, null);
+                Log.d(LOG_TAG, "Button Pressed");
         }
     }
 
