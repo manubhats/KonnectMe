@@ -12,19 +12,22 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="hackdfw.connectme.MainActivity"
     tools:showIn="@layout/activity_main"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="#0690af">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Phone Verfication"
-        android:textSize="25dp"/>
+        android:textSize="25dp"
+        android:textColor="#ffffff"/>
 
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp">
+        android:padding="15dp"
+        android:foregroundTint="#3a55b6">
 
         <EditText
             android:id="@+id/et_userPhone"
@@ -33,7 +36,8 @@
             android:layout_gravity="center_horizontal"
             android:ems="10"
             android:hint="Enter Your Phone Number"
-            android:inputType="phone" />
+            android:inputType="phone"
+            android:textColor="#ffffff" />
 
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
@@ -48,7 +52,9 @@
             android:layout_gravity="center_horizontal"
             android:ems="10"
             android:hint="Enter Your Name"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="#ffffff"
+            />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -57,7 +63,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Send Button" />
+        android:text="Verify"
+        android:background="#d49415" />
 
     <TextView
         android:id="@+id/tv_verified"
@@ -71,6 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Next" />
+        android:text="Next"
+        android:visibility="invisible"/>
 
 </LinearLayout>

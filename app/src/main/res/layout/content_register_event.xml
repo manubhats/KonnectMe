@@ -7,14 +7,17 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="hackdfw.connectme.RegisterEvent"
-    tools:showIn="@layout/activity_register_event">
+    tools:showIn="@layout/activity_register_event"
+
+    >
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="#e0f8d8"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -82,7 +85,8 @@
                 android:text="ADD "
                 android:padding="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                />
 
         </LinearLayout>
 
@@ -94,7 +98,9 @@
             android:layout_gravity="bottom"
             android:src="@android:drawable/ic_menu_add"
             app:backgroundTint="@color/colorPrimary"
-            android:layout_marginBottom="120dp"/>
+            android:layout_marginBottom="120dp"
+            android:background="#ffcc00"
+            />
 
     </LinearLayout>
 

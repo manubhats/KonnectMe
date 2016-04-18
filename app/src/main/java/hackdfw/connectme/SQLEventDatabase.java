@@ -48,42 +48,36 @@ public class SQLEventDatabase {
         dbHelper.close();
     }
 
-    public ArrayList<UserInformation> getData(String eventID) {
+    public ArrayList<Event> getData() {
 
-        ArrayList<UserInformation> userList = new ArrayList<>();
+        ArrayList<Event> eventList = new ArrayList<>();
 
         String[] columns = new String[]{KEY_ROWID, KEY_NAME, KEY_EVENTID };
 
-        String query = "SELECT * FROM " + DATABASE_TABLE + " WHERE eventID = " + eventID;
-        Cursor c = sqLiteDatabase.rawQuery(query, null);
-        String result = "";
+        try {
+            String query = "SELECT * FROM " + DATABASE_TABLE;
+            Cursor c = sqLiteDatabase.rawQuery(query, null);
+            String result = "";
 
-        int iRow = c.getColumnIndex(KEY_ROWID);
-        int iName = c.getColumnIndex(KEY_NAME);
-        int iEventID = c.getColumnIndex(KEY_EVENTID);
+            int iRow = c.getColumnIndex(KEY_ROWID);
+            int iName = c.getColumnIndex(KEY_NAME);
+            int iEventID = c.getColumnIndex(KEY_EVENTID);
 
-
-//        Log.d("SQLDATABASE", "SQLDATABASE: " + iRow + "\n" + iName + "\n" + iNumber + "\n" + iEmail + "\n" + iEventID);
-
-        for(c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+            for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
 
 
-            UserInformation userInformation = new UserInformation();
-            userInformation.userID = c.getString(iRow);
-            userInformation.name = c.getString(iName);
-            userInformation.eventID = c.getString(iEventID);
+                Event event = new Event();
+                event.eventID = c.getString(iEventID);
+                event.eventName = c.getString(iName);
 
-            userList.add(userInformation);
+                eventList.add(event);
 
-//            result = result + c.getString(iRow)
-//                    + " " + c.getString(iName)
-//                    + " " + c.getString(iNumber)
-//                    + " " + c.getString(iEmail)
-//                    + " " + c.getString(iEventID)
-//                    + "\n";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return userList;
+        return eventList;
     }
 
     public void deleteAll()
@@ -101,9 +95,11 @@ public class SQLEventDatabase {
         public void onCreate(SQLiteDatabase db) {
 
             db.execSQL(
-                    "CREATE TABLE " + DATABASE_TABLE + " (" +
-                            KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                            KEY_NAME + " TEXT NOT NULL, " + KEY_EVENTID + " INTEGER);"
+                    "CREATE TABLE "
+                            + DATABASE_TABLE + " ("
+                            + KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                            + KEY_NAME + " TEXT NOT NULL, "
+                            + KEY_EVENTID + " INTEGER);"
             );
 
         }
